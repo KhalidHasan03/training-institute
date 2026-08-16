@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AttendanceResource\Pages;
-use App\Filament\Resources\Concerns\AllowsTrainerAccess;
+use App\Filament\Resources\Concerns\RestrictsResourceAccess;
 use App\Models\Attendance;
 use App\Models\ClassSession;
 use Filament\Forms;
@@ -15,25 +15,13 @@ use Illuminate\Database\Eloquent\Builder;
 
 class AttendanceResource extends Resource
 {
-    use AllowsTrainerAccess;
+    use RestrictsResourceAccess;
 
     protected static ?string $model = Attendance::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?string $navigationGroup = 'Learning';
-
-    public static function getEloquentQuery(): Builder
-    {
-        $query = parent::getEloquentQuery();
-
-        $user = auth()->user();
-        if ($user && $user->isTrainer() && $user->trainer) {
-            $query->whereHas('batch', fn (Builder $q) => $q->where('trainer_id', $user->trainer->id));
-        }
-
-        return $query;
-    }
 
     public static function form(Form $form): Form
     {
@@ -55,11 +43,12 @@ class AttendanceResource extends Resource
                                 if (! $get('batch_id')) {
                                     return [];
                                 }
+
                                 return ClassSession::where('batch_id', $get('batch_id'))
                                     ->orderByDesc('date')
                                     ->get()
                                     ->mapWithKeys(fn (ClassSession $s) => [
-                                        $s->id => $s->date->format('d M Y') . ' — ' . ($s->topic ?: 'Untitled'),
+                                        $s->id => $s->date->format('d M Y').' — '.($s->topic ?: 'Untitled'),
                                     ]);
                             })
                             ->searchable()

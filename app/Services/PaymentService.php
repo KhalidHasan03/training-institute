@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Enrollment;
 use App\Models\Payment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -23,7 +22,7 @@ class PaymentService
             if ((float) $payment->amount > $enrollment->due) {
                 throw ValidationException::withMessages([
                     'amount' => 'Payment amount cannot exceed the outstanding due of '
-                        . $enrollment->due . ' ' . 'BDT.',
+                        .$enrollment->due.' '.'BDT.',
                 ]);
             }
 

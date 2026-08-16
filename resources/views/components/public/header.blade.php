@@ -46,7 +46,7 @@
             <button
                 type="button"
                 onclick="toggleTheme()"
-                class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 transition-colors hover:border-brand-300 hover:text-brand-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:border-brand-400/40 dark:hover:text-brand-300"
+                class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 transition-colors hover:border-brand-300 hover:text-brand-600 hover:bg-slate-50 dark:border-white/10 dark:bg-navy-800/50 dark:text-slate-200 dark:hover:border-brand-400/40 dark:hover:text-brand-300 dark:hover:bg-brand-500/10"
                 aria-label="Toggle dark mode"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="hidden h-5 w-5 dark:block"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" /></svg>
@@ -55,7 +55,9 @@
             @auth
                 @if ($loggedInUser->isStudent() && $loggedInUser->student)
                     <a href="{{ route('student.dashboard') }}" class="btn-primary">Student Portal</a>
-                @elseif ($loggedInUser->isAdmin() || $loggedInUser->isTrainer())
+                @elseif ($loggedInUser->isTrainer())
+                    <a href="{{ route('trainer.dashboard') }}" class="btn-primary">Trainer Portal</a>
+                @elseif ($loggedInUser->isAdmin())
                     <a href="{{ route('filament.admin.pages.dashboard') }}" class="btn-primary">Dashboard</a>
                 @else
                     <a href="{{ route('student.dashboard') }}" class="btn-outline">My Account</a>
@@ -88,7 +90,12 @@
             <x-public.nav-link href="{{ route('public.contact') }}">Contact</x-public.nav-link>
             <div class="mt-2 flex gap-3">
                 @auth
-                    <a href="{{ $loggedInUser->isStudent() ? route('student.dashboard') : route('filament.admin.pages.dashboard') }}" class="btn-primary flex-1">Dashboard</a>
+                    @php $dashboardUrl = $loggedInUser->isTrainer()
+                        ? route('trainer.dashboard')
+                        : ($loggedInUser->isStudent()
+                            ? route('student.dashboard')
+                            : route('filament.admin.pages.dashboard')); @endphp
+                    <a href="{{ $dashboardUrl }}" class="btn-primary flex-1">Dashboard</a>
                 @else
                     <a href="{{ route('login') }}" class="btn-secondary flex-1">Sign in</a>
                     <a href="{{ route('register') }}" class="btn-primary flex-1">Enroll Now</a>
@@ -97,7 +104,7 @@
             <button
                 type="button"
                 onclick="toggleTheme()"
-                class="flex items-center justify-center gap-2 rounded-xl border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-600 dark:border-white/10 dark:text-slate-300"
+                class="flex items-center justify-center gap-2 rounded-xl border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-600 hover:bg-slate-50 hover:border-brand-300 dark:border-white/10 dark:bg-navy-800/50 dark:text-slate-200 dark:hover:border-brand-400/40 dark:hover:text-brand-300 dark:hover:bg-brand-500/10"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="hidden h-5 w-5 dark:block"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" /></svg>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="h-5 w-5 dark:hidden"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" /></svg>

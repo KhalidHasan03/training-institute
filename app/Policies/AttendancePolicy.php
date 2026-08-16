@@ -7,31 +7,26 @@ use App\Models\User;
 
 class AttendancePolicy
 {
-    public function before(User $user, string $ability): bool|null
-    {
-        return $user->isAdmin() ? true : null;
-    }
+    use RestrictsToAdmin;
 
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin() || $user->isTrainer();
+        return $user->isAdmin();
     }
 
     public function view(User $user, Attendance $attendance): bool
     {
-        return $user->isAdmin()
-            || ($user->isTrainer() && $user->hasBatchAccess($attendance->batch))
-            || ($user->isStudent() && $user->student?->id === $attendance->student_id);
+        return $user->isAdmin();
     }
 
     public function create(User $user): bool
     {
-        return $user->isAdmin() || $user->isTrainer();
+        return $user->isAdmin();
     }
 
     public function update(User $user, Attendance $attendance): bool
     {
-        return $user->isAdmin() || ($user->isTrainer() && $user->hasBatchAccess($attendance->batch));
+        return $user->isAdmin();
     }
 
     public function delete(User $user, Attendance $attendance): bool

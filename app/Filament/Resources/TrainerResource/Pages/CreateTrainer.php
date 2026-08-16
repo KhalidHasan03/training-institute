@@ -4,7 +4,6 @@ namespace App\Filament\Resources\TrainerResource\Pages;
 
 use App\Filament\Resources\TrainerResource;
 use App\Models\User;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateTrainer extends CreateRecord

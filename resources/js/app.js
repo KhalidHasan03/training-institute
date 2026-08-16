@@ -1,7 +1,3 @@
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
 // Theme toggle (uses the dark class on <html>, persisted in localStorage)
 window.toggleTheme = function () {
     const root = document.documentElement;
@@ -10,8 +6,6 @@ window.toggleTheme = function () {
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
     } catch (e) {}
 };
-
-Alpine.start();
 
 // Scroll reveal via IntersectionObserver
 document.addEventListener('DOMContentLoaded', () => {

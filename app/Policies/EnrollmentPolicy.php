@@ -7,27 +7,16 @@ use App\Models\User;
 
 class EnrollmentPolicy
 {
-    public function before(User $user, string $ability): bool|null
-    {
-        return $user->isAdmin() ? true : null;
-    }
+    use RestrictsToAdmin;
 
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin() || $user->isTrainer();
+        return $user->isAdmin();
     }
 
     public function view(User $user, Enrollment $enrollment): bool
     {
-        if ($user->isTrainer()) {
-            return $user->hasBatchAccess($enrollment->batch);
-        }
-
-        if ($user->isStudent()) {
-            return $user->student?->id === $enrollment->student_id;
-        }
-
-        return false;
+        return $user->isAdmin();
     }
 
     public function create(User $user): bool
@@ -37,7 +26,7 @@ class EnrollmentPolicy
 
     public function update(User $user, Enrollment $enrollment): bool
     {
-        return $user->isAdmin() || ($user->isTrainer() && $user->hasBatchAccess($enrollment->batch));
+        return $user->isAdmin();
     }
 
     public function delete(User $user, Enrollment $enrollment): bool

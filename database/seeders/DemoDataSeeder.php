@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Assignment;
 use App\Models\Announcement;
+use App\Models\Assignment;
 use App\Models\Batch;
 use App\Models\Certificate;
 use App\Models\ClassSession;
@@ -12,11 +12,9 @@ use App\Models\Enrollment;
 use App\Models\Exam;
 use App\Models\Material;
 use App\Models\Payment;
-use App\Models\Result;
 use App\Models\Student;
 use App\Models\Trainer;
 use App\Models\User;
-use App\Services\CertificateService;
 use App\Services\EnrollmentService;
 use App\Services\StudentIdService;
 use Carbon\Carbon;
@@ -43,7 +41,7 @@ class DemoDataSeeder extends Seeder
                 [
                     'user_id' => $trainerUsers[$i]?->id ?? null,
                     'name' => $t['name'],
-                    'phone' => '0181' . str_pad((string) random_int(0, 9999999), 7, '0', STR_PAD_LEFT),
+                    'phone' => '0181'.str_pad((string) random_int(0, 9999999), 7, '0', STR_PAD_LEFT),
                     'expertise' => $t['expertise'],
                     'bio' => $t['bio'],
                     'status' => 'active',
@@ -158,7 +156,7 @@ class DemoDataSeeder extends Seeder
                 [
                     'title' => $c['title'],
                     'short_description' => $c['short_description'],
-                    'description' => $c['short_description'] . " In this hands-on program you will work on real projects, learn from industry practitioners, and graduate with a portfolio-ready skillset.",
+                    'description' => $c['short_description'].' In this hands-on program you will work on real projects, learn from industry practitioners, and graduate with a portfolio-ready skillset.',
                     'duration' => $c['duration'],
                     'fee' => $c['fee'],
                     'level' => $c['level'],
@@ -173,17 +171,17 @@ class DemoDataSeeder extends Seeder
         $studentNames = ['Ayesha Akter', 'Mahmud Hasan', 'Sadia Islam', 'Imran Hossain', 'Farhana Rahman', 'Shakil Khan'];
 
         $studentIds = [];
-        $idService = new StudentIdService();
+        $idService = new StudentIdService;
         $i = 0;
         foreach ($studentNames as $name) {
-            $email = strtolower(Str::slug($name)) . '@example.com';
+            $email = strtolower(Str::slug($name)).'@example.com';
             $student = Student::updateOrCreate(
                 ['email' => $email],
                 [
                     'user_id' => $i === 0 ? $studentUser?->id : null,
                     'student_id' => $idService->generate(),
                     'name' => $name,
-                    'phone' => '017' . str_pad((string) random_int(0, 99999999), 8, '0', STR_PAD_LEFT),
+                    'phone' => '017'.str_pad((string) random_int(0, 99999999), 8, '0', STR_PAD_LEFT),
                     'date_of_birth' => Carbon::create(1998 + ($i % 5), 1 + ($i % 12), 5 + $i),
                     'address' => 'Dhaka, Bangladesh',
                     'status' => 'active',
@@ -200,7 +198,7 @@ class DemoDataSeeder extends Seeder
             ['course' => 2, 'trainer' => 1, 'name' => 'UX-12', 'days' => 'Tue, Thu', 'start' => '17:00', 'end' => '19:00', 'room' => 'Room 205'],
         ];
 
-        $enrollmentService = new EnrollmentService();
+        $enrollmentService = new EnrollmentService;
         $enrollments = [];
 
         foreach ($batches as $bi => $b) {
@@ -246,7 +244,7 @@ class DemoDataSeeder extends Seeder
                     'amount' => round((float) $en->final_fee / 2, 2),
                     'payment_date' => today()->subDays(random_int(1, 20)),
                     'payment_method' => ['bKash', 'Cash', 'Nagad'][random_int(0, 2)],
-                    'transaction_id' => 'TXN-' . Str::upper(Str::random(8)),
+                    'transaction_id' => 'TXN-'.Str::upper(Str::random(8)),
                     'notes' => null,
                     'status' => 'completed',
                 ]
@@ -268,7 +266,7 @@ class DemoDataSeeder extends Seeder
                     'amount' => round($remaining, 2),
                     'payment_date' => today()->subDay(),
                     'payment_method' => 'bKash',
-                    'transaction_id' => 'TXN-' . Str::upper(Str::random(8)),
+                    'transaction_id' => 'TXN-'.Str::upper(Str::random(8)),
                     'notes' => 'Final installment',
                     'status' => 'completed',
                 ]);
@@ -291,7 +289,7 @@ class DemoDataSeeder extends Seeder
                         'trainer_id' => $batch->trainer_id,
                         'start_time' => $batch->start_time,
                         'end_time' => $batch->end_time,
-                        'topic' => 'Lesson ' . ($d + 1) . ': ' . $batch->course->title,
+                        'topic' => 'Lesson '.($d + 1).': '.$batch->course->title,
                         'room' => $batch->room,
                         'status' => $d < 2 ? 'completed' : 'scheduled',
                     ]
@@ -301,14 +299,14 @@ class DemoDataSeeder extends Seeder
             Material::updateOrCreate(
                 ['batch_id' => $batch->id, 'title' => 'Introduction Slides'],
                 [
-                    'description' => 'Welcome slides and course outline for ' . $batch->name . '.',
+                    'description' => 'Welcome slides and course outline for '.$batch->name.'.',
                     'type' => 'document',
                     'is_published' => true,
                 ]
             );
 
             Assignment::updateOrCreate(
-                ['batch_id' => $batch->id, 'title' => 'Assignment ' . rand(1, 2)],
+                ['batch_id' => $batch->id, 'title' => 'Assignment '.rand(1, 2)],
                 [
                     'description' => 'Complete the practical exercise covered in this week\'s class.',
                     'total_marks' => 100,

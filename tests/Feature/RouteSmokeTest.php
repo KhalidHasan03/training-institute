@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Batch;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,10 +24,10 @@ class RouteSmokeTest extends TestCase
             $this->get($path)->assertStatus(200);
         }
 
-        $batchId = \App\Models\Batch::where('status', 'active')->first()->id;
+        $batchId = Batch::where('status', 'active')->first()->id;
         $this->get("/register?batch={$batchId}")->assertOk();
 
-        $batch = \App\Models\Batch::where('status', 'active')->first();
+        $batch = Batch::where('status', 'active')->first();
         $course = $batch->course;
         $this->get(route('public.courses.show', $course))->assertOk();
     }

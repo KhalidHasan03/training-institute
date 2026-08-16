@@ -6,13 +6,11 @@ use App\Filament\Resources\Concerns\RestrictsResourceAccess;
 use App\Filament\Resources\PaymentResource\Pages;
 use App\Models\Enrollment;
 use App\Models\Payment;
-use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class PaymentResource extends Resource
 {
@@ -44,11 +42,12 @@ class PaymentResource extends Resource
                                 if (! $get('student_id')) {
                                     return [];
                                 }
+
                                 return Enrollment::where('student_id', $get('student_id'))
                                     ->with('batch.course')
                                     ->get()
                                     ->mapWithKeys(fn (Enrollment $en) => [
-                                        $en->id => $en->batch?->name . ' — ' . $en->batch?->course?->title,
+                                        $en->id => $en->batch?->name.' — '.$en->batch?->course?->title,
                                     ]);
                             })
                             ->searchable()

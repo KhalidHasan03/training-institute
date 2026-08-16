@@ -41,7 +41,11 @@ class LoginController extends Controller
             ]);
         }
 
-        if ($user->isAdmin() || $user->isTrainer()) {
+        if ($user->isTrainer()) {
+            return redirect()->intended(route('trainer.dashboard'));
+        }
+
+        if ($user->isAdmin()) {
             return redirect()->intended(route('filament.admin.pages.dashboard'));
         }
 

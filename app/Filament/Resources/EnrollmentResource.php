@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\Concerns\AllowsTrainerAccess;
+use App\Filament\Resources\Concerns\RestrictsResourceAccess;
 use App\Filament\Resources\EnrollmentResource\Pages;
+use App\Models\Batch;
 use App\Models\Enrollment;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -14,25 +15,13 @@ use Illuminate\Database\Eloquent\Builder;
 
 class EnrollmentResource extends Resource
 {
-    use AllowsTrainerAccess;
+    use RestrictsResourceAccess;
 
     protected static ?string $model = Enrollment::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     protected static ?string $navigationGroup = 'Learning';
-
-    public static function getEloquentQuery(): Builder
-    {
-        $query = parent::getEloquentQuery();
-
-        $user = auth()->user();
-        if ($user && $user->isTrainer() && $user->trainer) {
-            $query->whereHas('batch', fn (Builder $q) => $q->where('trainer_id', $user->trainer->id));
-        }
-
-        return $query;
-    }
 
     public static function form(Form $form): Form
     {
@@ -54,7 +43,7 @@ class EnrollmentResource extends Resource
                             ->required()
                             ->afterStateUpdated(function (Forms\Set $set, ?string $state) {
                                 if ($state) {
-                                    $batch = \App\Models\Batch::with('course')->find($state);
+                                    $batch = Batch::with('course')->find($state);
                                     $set('course_fee', $batch?->course?->fee ?? 0);
                                     $set('final_fee', $batch?->course?->fee ?? 0);
                                 }

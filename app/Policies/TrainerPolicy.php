@@ -16,7 +16,7 @@ class TrainerPolicy
 
     public function view(User $user, Trainer $trainer): bool
     {
-        return $user->isAdmin() || ($user->isTrainer() && $user->trainer?->id === $trainer->id);
+        return $user->isAdmin();
     }
 
     public function create(User $user): bool
@@ -26,7 +26,7 @@ class TrainerPolicy
 
     public function update(User $user, Trainer $trainer): bool
     {
-        return $user->isAdmin() || ($user->isTrainer() && $user->trainer?->id === $trainer->id);
+        return $user->isAdmin();
     }
 
     public function delete(User $user, Trainer $trainer): bool

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Batch extends Model
 {
@@ -78,7 +79,7 @@ class Batch extends Model
         return $this->hasMany(Attendance::class);
     }
 
-    public function students(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    public function students(): HasManyThrough
     {
         return $this->hasManyThrough(Student::class, Enrollment::class, 'batch_id', 'id', 'id', 'student_id');
     }

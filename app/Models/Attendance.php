@@ -11,7 +11,9 @@ class Attendance extends Model
     use HasFactory;
 
     public const STATUS_PRESENT = 'present';
+
     public const STATUS_ABSENT = 'absent';
+
     public const STATUS_LATE = 'late';
 
     protected $fillable = [

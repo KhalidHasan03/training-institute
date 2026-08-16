@@ -7,19 +7,16 @@ use App\Models\User;
 
 class BatchPolicy
 {
-    public function before(User $user, string $ability): bool|null
-    {
-        return $user->isAdmin() ? true : null;
-    }
+    use RestrictsToAdmin;
 
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin() || $user->isTrainer() || $user->isStudent();
+        return $user->isAdmin();
     }
 
     public function view(User $user, Batch $batch): bool
     {
-        return $user->isAdmin() || $batch->status === 'active' || $user->hasBatchAccess($batch);
+        return $user->isAdmin();
     }
 
     public function create(User $user): bool
@@ -29,7 +26,7 @@ class BatchPolicy
 
     public function update(User $user, Batch $batch): bool
     {
-        return $user->hasBatchAccess($batch);
+        return $user->isAdmin();
     }
 
     public function delete(User $user, Batch $batch): bool

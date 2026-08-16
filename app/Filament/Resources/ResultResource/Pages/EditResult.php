@@ -7,12 +7,13 @@ use App\Models\Exam;
 use App\Services\ResultService;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class EditResult extends EditRecord
 {
     protected static string $resource = ResultResource::class;
 
-    protected function handleRecordUpdate(\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model
+    protected function handleRecordUpdate(Model $record, array $data): Model
     {
         $record->fill($data);
         $exam = Exam::findOrFail($data['exam_id']);

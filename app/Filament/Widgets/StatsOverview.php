@@ -39,11 +39,11 @@ class StatsOverview extends BaseWidget
                 ->description('Active trainers')
                 ->descriptionIcon('heroicon-m-user-group')
                 ->color('info'),
-            Stat::make('Total Revenue', number_format($revenue) . ' BDT')
+            Stat::make('Total Revenue', number_format($revenue).' BDT')
                 ->description('Collected payments')
                 ->descriptionIcon('heroicon-m-banknotes')
                 ->color('success'),
-            Stat::make('Total Due', number_format($due) . ' BDT')
+            Stat::make('Total Due', number_format($due).' BDT')
                 ->description('Outstanding from enrollments')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('danger'),

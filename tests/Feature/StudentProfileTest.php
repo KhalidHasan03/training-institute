@@ -6,6 +6,7 @@ use App\Livewire\Student\Profile;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -82,7 +83,7 @@ class StudentProfileTest extends TestCase
             ->call('changePassword')
             ->assertHasErrors('current_password');
 
-        $this->assertFalse(\Illuminate\Support\Facades\Hash::check('newpassword123', $user->fresh()->password));
+        $this->assertFalse(Hash::check('newpassword123', $user->fresh()->password));
     }
 
     public function test_change_password_updates_hash(): void
@@ -98,6 +99,6 @@ class StudentProfileTest extends TestCase
             ->assertHasNoErrors()
             ->assertSet('current_password', null);
 
-        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('newpassword123', $user->fresh()->password));
+        $this->assertTrue(Hash::check('newpassword123', $user->fresh()->password));
     }
 }

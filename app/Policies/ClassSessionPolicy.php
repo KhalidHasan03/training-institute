@@ -7,19 +7,16 @@ use App\Models\User;
 
 class ClassSessionPolicy
 {
-    public function before(User $user, string $ability): bool|null
-    {
-        return $user->isAdmin() ? true : null;
-    }
+    use RestrictsToAdmin;
 
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin() || $user->isTrainer() || $user->isStudent();
+        return $user->isAdmin();
     }
 
     public function view(User $user, ClassSession $session): bool
     {
-        return $user->hasBatchAccess($session->batch);
+        return $user->isAdmin();
     }
 
     public function create(User $user): bool
@@ -29,11 +26,11 @@ class ClassSessionPolicy
 
     public function update(User $user, ClassSession $session): bool
     {
-        return $user->isAdmin() || ($user->isTrainer() && $user->hasBatchAccess($session->batch));
+        return $user->isAdmin();
     }
 
     public function delete(User $user, ClassSession $session): bool
     {
-        return $user->isAdmin() || ($user->isTrainer() && $user->hasBatchAccess($session->batch));
+        return $user->isAdmin();
     }
 }

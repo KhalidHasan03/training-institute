@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Student;
 
+use App\Models\Announcement;
 use App\Models\Attendance;
 use App\Models\Batch;
 use App\Models\ClassSession;
@@ -160,7 +161,7 @@ abstract class StudentComponent extends Component
 
     public function getAnnouncementsProperty()
     {
-        return \App\Models\Announcement::published()
+        return Announcement::published()
             ->whereIn('audience', ['all', 'students'])
             ->latest('published_at')
             ->take(5)

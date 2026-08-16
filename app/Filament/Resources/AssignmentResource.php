@@ -3,31 +3,23 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AssignmentResource\Pages;
-use App\Filament\Resources\Concerns\AllowsTrainerAccess;
-use App\Filament\Resources\Concerns\ScopesToTrainersBatches;
+use App\Filament\Resources\Concerns\RestrictsResourceAccess;
 use App\Models\Assignment;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class AssignmentResource extends Resource
 {
-    use AllowsTrainerAccess;
-    use ScopesToTrainersBatches;
+    use RestrictsResourceAccess;
 
     protected static ?string $model = Assignment::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
 
     protected static ?string $navigationGroup = 'Learning';
-
-    public static function getEloquentQuery(): Builder
-    {
-        return self::scopeQueryToTrainerBatches(parent::getEloquentQuery());
-    }
 
     public static function form(Form $form): Form
     {

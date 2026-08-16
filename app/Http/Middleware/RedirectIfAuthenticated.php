@@ -17,7 +17,11 @@ class RedirectIfAuthenticated
             if (Auth::guard($guard)->check()) {
                 $user = $request->user();
 
-                if ($user->isAdmin() || $user->isTrainer()) {
+                if ($user->isTrainer()) {
+                    return redirect()->route('trainer.dashboard');
+                }
+
+                if ($user->isAdmin()) {
                     return redirect()->route('filament.admin.pages.dashboard');
                 }
 

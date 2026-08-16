@@ -19,6 +19,13 @@ use App\Livewire\Student\Payments;
 use App\Livewire\Student\Profile;
 use App\Livewire\Student\Results;
 use App\Livewire\Student\Schedule;
+use App\Livewire\Trainer\Attendance as TrainerAttendance;
+use App\Livewire\Trainer\Batches;
+use App\Livewire\Trainer\Dashboard as TrainerDashboard;
+use App\Livewire\Trainer\Exams;
+use App\Livewire\Trainer\Profile as TrainerProfile;
+use App\Livewire\Trainer\Sessions;
+use App\Livewire\Trainer\Students;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('public.home');
@@ -59,4 +66,14 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/my-certificate', Certificate::class)->name('student.certificate');
     Route::get('/profile', Profile::class)->name('student.profile');
     Route::post('/enroll/{batch}', [StudentEnrollmentController::class, 'store'])->name('student.enroll');
+});
+
+Route::middleware(['auth', 'role:trainer'])->prefix('trainer')->name('trainer.')->group(function () {
+    Route::get('/', TrainerDashboard::class)->name('dashboard');
+    Route::get('/batches', Batches::class)->name('batches');
+    Route::get('/sessions', Sessions::class)->name('sessions');
+    Route::get('/attendance', TrainerAttendance::class)->name('attendance');
+    Route::get('/exams', Exams::class)->name('exams');
+    Route::get('/students', Students::class)->name('students');
+    Route::get('/profile', TrainerProfile::class)->name('profile');
 });

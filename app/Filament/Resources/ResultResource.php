@@ -2,37 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\Concerns\AllowsTrainerAccess;
+use App\Filament\Resources\Concerns\RestrictsResourceAccess;
 use App\Filament\Resources\ResultResource\Pages;
+use App\Models\Exam;
 use App\Models\Result;
+use App\Services\ResultService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class ResultResource extends Resource
 {
-    use AllowsTrainerAccess;
+    use RestrictsResourceAccess;
 
     protected static ?string $model = Result::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     protected static ?string $navigationGroup = 'Assessments';
-
-    public static function getEloquentQuery(): Builder
-    {
-        $query = parent::getEloquentQuery();
-
-        $user = auth()->user();
-        if ($user && $user->isTrainer() && $user->trainer) {
-            $query->whereHas('exam.batch', fn (Builder $q) => $q->where('trainer_id', $user->trainer->id));
-        }
-
-        return $query;
-    }
 
     public static function form(Form $form): Form
     {
@@ -51,10 +40,11 @@ class ResultResource extends Resource
                         Forms\Components\Select::make('student_id')
                             ->label('Student')
                             ->options(function (Forms\Get $get) {
-                                $exam = $get('exam_id') ? \App\Models\Exam::with('batch.enrollments.student')->find($get('exam_id')) : null;
+                                $exam = $get('exam_id') ? Exam::with('batch.enrollments.student')->find($get('exam_id')) : null;
                                 if (! $exam) {
                                     return [];
                                 }
+
                                 return $exam->batch->enrollments
                                     ->where('status', 'active')
                                     ->mapWithKeys(fn ($en) => [$en->student_id => $en->student?->name]);
@@ -70,9 +60,10 @@ class ResultResource extends Resource
                             ->label('Grade')
                             ->content(function (Forms\Get $get) {
                                 $marks = (float) $get('marks');
-                                $total = (float) \App\Models\Exam::find($get('exam_id'))?->total_marks ?? 0;
+                                $total = (float) Exam::find($get('exam_id'))?->total_marks ?? 0;
                                 $pct = $total > 0 ? ($marks / $total) * 100 : 0;
-                                return $marks !== 0.0 ? \App\Services\ResultService::gradeForPercentage($pct) : '—';
+
+                                return $marks !== 0.0 ? ResultService::gradeForPercentage($pct) : '—';
                             })
                             ->dehydrated(false)
                             ->hidden(fn (Forms\Get $get) => ! $get('exam_id')),

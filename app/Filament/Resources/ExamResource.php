@@ -2,8 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\Concerns\AllowsTrainerAccess;
-use App\Filament\Resources\Concerns\ScopesToTrainersBatches;
+use App\Filament\Resources\Concerns\RestrictsResourceAccess;
 use App\Filament\Resources\ExamResource\Pages;
 use App\Models\Exam;
 use Filament\Forms;
@@ -11,23 +10,16 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class ExamResource extends Resource
 {
-    use AllowsTrainerAccess;
-    use ScopesToTrainersBatches;
+    use RestrictsResourceAccess;
 
     protected static ?string $model = Exam::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
     protected static ?string $navigationGroup = 'Assessments';
-
-    public static function getEloquentQuery(): Builder
-    {
-        return self::scopeQueryToTrainerBatches(parent::getEloquentQuery());
-    }
 
     public static function form(Form $form): Form
     {

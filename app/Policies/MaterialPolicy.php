@@ -7,33 +7,30 @@ use App\Models\User;
 
 class MaterialPolicy
 {
-    public function before(User $user, string $ability): bool|null
-    {
-        return $user->isAdmin() ? true : null;
-    }
+    use RestrictsToAdmin;
 
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin() || $user->isTrainer();
+        return $user->isAdmin();
     }
 
     public function view(User $user, Material $material): bool
     {
-        return $user->hasBatchAccess($material->batch);
+        return $user->isAdmin();
     }
 
     public function create(User $user): bool
     {
-        return $user->isAdmin() || $user->isTrainer();
+        return $user->isAdmin();
     }
 
     public function update(User $user, Material $material): bool
     {
-        return $user->isAdmin() || ($user->isTrainer() && $user->hasBatchAccess($material->batch));
+        return $user->isAdmin();
     }
 
     public function delete(User $user, Material $material): bool
     {
-        return $user->isAdmin() || ($user->isTrainer() && $user->hasBatchAccess($material->batch));
+        return $user->isAdmin();
     }
 }

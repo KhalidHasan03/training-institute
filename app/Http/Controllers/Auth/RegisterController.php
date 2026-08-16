@@ -12,7 +12,6 @@ use App\Services\StudentIdService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 
 class RegisterController extends Controller
 {

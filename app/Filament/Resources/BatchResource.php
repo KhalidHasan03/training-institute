@@ -3,18 +3,17 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BatchResource\Pages;
-use App\Filament\Resources\Concerns\AllowsTrainerAccess;
+use App\Filament\Resources\Concerns\RestrictsResourceAccess;
 use App\Models\Batch;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class BatchResource extends Resource
 {
-    use AllowsTrainerAccess;
+    use RestrictsResourceAccess;
 
     protected static ?string $model = Batch::class;
 
@@ -22,22 +21,8 @@ class BatchResource extends Resource
 
     protected static ?string $navigationGroup = 'Academics';
 
-    public static function getEloquentQuery(): Builder
-    {
-        $query = parent::getEloquentQuery();
-
-        $user = auth()->user();
-        if ($user && $user->isTrainer() && $user->trainer) {
-            $query->where('trainer_id', $user->trainer->id);
-        }
-
-        return $query;
-    }
-
     public static function form(Form $form): Form
     {
-        $user = auth()->user();
-
         return $form
             ->schema([
                 Forms\Components\Section::make('Batch Information')
@@ -56,8 +41,7 @@ class BatchResource extends Resource
                             ->label('Trainer')
                             ->relationship('trainer', 'name')
                             ->searchable()
-                            ->preload()
-                            ->default($user?->isTrainer() ? $user->trainer?->id : null),
+                            ->preload(),
                     ])
                     ->columns(3),
                 Forms\Components\Section::make('Schedule')
@@ -132,7 +116,7 @@ class BatchResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('start_time')
                     ->label('Time')
-                    ->state(fn (Batch $record) => $record->start_time?->format('g:i A') . ' - ' . $record->end_time?->format('g:i A')),
+                    ->state(fn (Batch $record) => $record->start_time?->format('g:i A').' - '.$record->end_time?->format('g:i A')),
                 Tables\Columns\TextColumn::make('enrolled_count')
                     ->label('Seats')
                     ->badge()

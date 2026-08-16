@@ -10,13 +10,21 @@ class Profile extends StudentComponent
     use WithFileUploads;
 
     public ?string $name = null;
+
     public ?string $phone = null;
+
     public ?string $date_of_birth = null;
+
     public ?string $address = null;
+
     public $photo;
+
     public ?string $current_password = null;
+
     public ?string $new_password = null;
+
     public ?string $new_password_confirmation = null;
+
     public bool $saved = false;
 
     public function mount(): void

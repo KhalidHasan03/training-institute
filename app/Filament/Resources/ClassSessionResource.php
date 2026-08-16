@@ -3,8 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClassSessionResource\Pages;
-use App\Filament\Resources\Concerns\AllowsTrainerAccess;
-use App\Filament\Resources\Concerns\ScopesToTrainersBatches;
+use App\Filament\Resources\Concerns\RestrictsResourceAccess;
+use App\Models\Batch;
 use App\Models\ClassSession;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,8 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ClassSessionResource extends Resource
 {
-    use AllowsTrainerAccess;
-    use ScopesToTrainersBatches;
+    use RestrictsResourceAccess;
 
     protected static ?string $model = ClassSession::class;
 
@@ -24,15 +23,8 @@ class ClassSessionResource extends Resource
 
     protected static ?string $navigationGroup = 'Learning';
 
-    public static function getEloquentQuery(): Builder
-    {
-        return self::scopeQueryToTrainerBatches(parent::getEloquentQuery());
-    }
-
     public static function form(Form $form): Form
     {
-        $user = auth()->user();
-
         return $form
             ->schema([
                 Forms\Components\Section::make('Class Session')
@@ -44,7 +36,7 @@ class ClassSessionResource extends Resource
                             ->preload()
                             ->required()
                             ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, ?string $state) {
-                                $batch = \App\Models\Batch::find($state);
+                                $batch = Batch::find($state);
                                 if ($batch) {
                                     $set('trainer_id', $batch->trainer_id);
                                     $set('start_time', $batch->start_time?->format('H:i'));
@@ -56,8 +48,7 @@ class ClassSessionResource extends Resource
                             ->label('Trainer')
                             ->relationship('trainer', 'name')
                             ->searchable()
-                            ->preload()
-                            ->default($user?->isTrainer() ? $user->trainer?->id : null),
+                            ->preload(),
                         Forms\Components\DatePicker::make('date')
                             ->required(),
                         Forms\Components\TimePicker::make('start_time')
@@ -98,7 +89,7 @@ class ClassSessionResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('start_time')
                     ->label('Time')
-                    ->state(fn (ClassSession $record) => $record->start_time?->format('g:i A') . ' - ' . $record->end_time?->format('g:i A')),
+                    ->state(fn (ClassSession $record) => $record->start_time?->format('g:i A').' - '.$record->end_time?->format('g:i A')),
                 Tables\Columns\TextColumn::make('batch.name')
                     ->searchable()
                     ->sortable(),

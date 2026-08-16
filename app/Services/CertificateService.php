@@ -27,7 +27,7 @@ class CertificateService
     public static function generateCertificateNumber(): string
     {
         do {
-            $number = 'CERT-' . now()->year . '-' . strtoupper(Str::random(8));
+            $number = 'CERT-'.now()->year.'-'.strtoupper(Str::random(8));
         } while (Certificate::where('certificate_number', $number)->exists());
 
         return $number;
