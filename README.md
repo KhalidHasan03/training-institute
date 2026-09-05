@@ -1,66 +1,155 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Training Institute Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern, web-based **Training Institute Management System** that combines Learning Management System (LMS) and Enterprise Resource Planning (ERP) capabilities into a single centralized platform.
 
-## About Laravel
+The system is designed to help training institutes, coaching centers, professional academies, and skill-development organizations manage courses, batches, students, trainers, classes, attendance, learning materials, examinations, payments, certificates, and administrative operations from one platform.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Overview
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+As a training institute grows, managing students, batches, attendance, payments, examinations, and certificates through spreadsheets and disconnected tools becomes increasingly difficult.
 
-## Learning Laravel
+This project provides a centralized digital solution where administrators, trainers, and students can manage their respective activities through dedicated interfaces.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+The platform covers the complete workflow:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**Course → Batch → Enrollment → Classes → Attendance → Materials → Assignments → Exams → Results → Payments → Certificate**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+The goal is to simplify institute operations, reduce manual work, improve visibility, and provide a better experience for both management and students.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Key Features
 
-### Premium Partners
+### Public Website
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- Modern responsive landing page
+- Featured courses
+- Course listing
+- Course details
+- Trainer directory
+- About page
+- Contact form
+- Student registration and login
+- Public certificate verification
+- Printable certificate verification page
+- Course and batch information
 
-## Contributing
+### Student Portal
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Student dashboard
+- Enrolled course overview
+- Batch switching
+- Class schedule
+- Attendance tracking
+- Attendance percentage
+- Course materials
+- Assignment tracking
+- Assignment deadline and overdue detection
+- Examination results
+- Payment history
+- Outstanding payment tracking
+- Certificate access
+- Profile management
 
-## Code of Conduct
+### Trainer Portal
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Trainer dashboard
+- Assigned batch management
+- Batch switching
+- Class session management
+- Attendance management
+- Student management
+- Examination management
+- Student academic monitoring
+- Trainer profile management
 
-## Security Vulnerabilities
+Trainer access is restricted to the batches assigned to the authenticated trainer.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Admin Panel
 
-## License
+The administration panel is powered by **Filament 3** and provides centralized management of the entire institute.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Administrators can manage:
+
+- Users
+- Students
+- Trainers
+- Courses
+- Batches
+- Enrollments
+- Class Sessions
+- Attendance
+- Materials
+- Assignments
+- Exams
+- Results
+- Payments
+- Certificates
+- Announcements
+
+---
+
+## Admin Dashboard
+
+The administration dashboard provides real-time operational and financial insights.
+
+### Key Metrics
+
+- Total Students
+- Total Courses
+- Total Batches
+- Total Trainers
+- Total Revenue
+- Outstanding Dues
+
+### Analytics & Widgets
+
+- Enrollment Chart
+- Attendance Chart
+- Revenue Chart
+- Recent Enrollments
+- Recent Payments
+- Today's Classes
+- Upcoming Classes
+
+These dashboards help management monitor the institute's performance from a single location.
+
+---
+
+## Certificate Management
+
+The system includes a complete digital certificate management and verification workflow.
+
+Administrators can issue certificates containing:
+
+- Certificate Number
+- Verification Code
+- Student Information
+- Course Information
+- Completion Information
+
+Certificates can then be publicly verified without requiring users to log into the system.
+
+### Certificate Workflow
+
+```text
+Administrator
+      |
+      v
+Issue Certificate
+      |
+      v
+Certificate Number
++
+Verification Code
+      |
+      v
+Public Verification
+      |
+      v
+Verified Certificate
+      |
+      v
+Printable Certificate
